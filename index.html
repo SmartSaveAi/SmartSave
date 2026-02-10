@@ -1,206 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EnergiAi</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-  /* ===== GLOBAL STYLES ===== */
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f5f7fb;
-    color: #333;
-    margin: 0;
-    padding: 0;
-  }
-  h1, h2 {
-    color: #1f2937;
-  }
-  button {
-    background-color: #4f46e5;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: 0.3s;
-  }
-  button:hover {
-    background-color: #4338ca;
-  }
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 30px 20px;
-  }
-  .dashboard {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-  }
-  .card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  }
-  .stats p {
-    font-size: 18px;
-    margin: 8px 0;
-  }
-  #suggestions {
-    font-weight: bold;
-    color: #f97316; /* orange highlight */
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
-  }
-  ul {
-    padding-left: 20px;
-  }
-  canvas {
-    background: #fff;
-    border-radius: 12px;
-    padding: 10px;
-  }
-  footer {
-    text-align: center;
-    margin-top: 50px;
-    color: #6b7280;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinSight AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.4.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna@1.0.0/dist/qna.min.js"></script>
+  <style>
+    :root{--bg:#0b1020;--card:#121833;--accent:#6ee7b7;--text:#e6e9f2;--muted:#9aa3b2}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, system-ui, Arial, sans-serif;background:linear-gradient(180deg,#0b1020,#0e1530);color:var(--text)}
+    header{padding:24px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .logo{font-weight:700;font-size:20px}
+    .container{max-width:1200px;margin:auto;padding:24px}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;margin-bottom:30px}
+    .card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    h1{font-size:40px;margin:0 0 12px} h3{margin-top:0} p{color:var(--muted)}
+    button{background:var(--accent);color:#042018;border:none;padding:12px 16px;border-radius:10px;font-weight:600;cursor:pointer}
+    input, textarea{width:100%;margin-top:8px;margin-bottom:12px;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:#0b1020;color:var(--text)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .ai-box{min-height:140px;background:#0b1020;border-radius:10px;padding:12px;border:1px dashed rgba(255,255,255,0.1)}
+    footer{margin-top:40px;padding:20px;text-align:center;color:var(--muted);font-size:13px}
+    canvas{margin-top:10px}
+    .goal{font-size:14px}
+    @media(max-width:900px){.hero,.grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
+  <header>
+    <div class="logo">FinSight AI</div>
+    <div>On-Device AI Finance</div>
+  </header>
 
-<div class="container">
-  <h1>AI Power Optimizer</h1>
-  <p>Track your device usage, optimize your energy costs, and get smart AI suggestions.</p>
+  <div class="container">
+    <section class="hero">
+      <div>
+        <h1>Smarter Money Decisions, Fully On-Device</h1>
+        <p>Track income and expenses, set goals, and get AI-generated guidance, entirely locally.</p>
+      </div>
+      <div class="card">
+        <strong>Monthly Snapshot</strong>
+        <p>Income: <span id="snapIncome">$0</span></p>
+        <p>Expenses: <span id="snapExpenses">$0</span></p>
+        <p>Savings: <span id="snapSavings">$0</span></p>
+        <p class="goal">Goal Progress: <span id="goalProgress">0%</span></p>
+      </div>
+    </section>
 
-  <!-- Buttons -->
-  <div style="margin-top:20px;">
-    <button id="startBtn">Start Tracking</button>
-    <button id="stopBtn" disabled>Stop Tracking</button>
+    <section class="grid">
+      <div class="card">
+        <h3>Monthly Data</h3>
+        <input id="income" type="number" placeholder="Monthly income" />
+        <input id="expenses" type="number" placeholder="Monthly expenses" />
+        <textarea id="notes" rows="4" placeholder="Spending notes (optional)"></textarea>
+        <h3>Savings Goal</h3>
+        <input id="goalAmount" type="number" placeholder="Goal amount (ex: 1000)" />
+        <input id="goalDate" type="date" />
+        <button onclick="saveData()">Save & Analyze</button>
+      </div>
+
+      <div class="card">
+        <h3>AI Generated Financial Guidance</h3>
+        <div id="aiOutput" class="ai-box">Your AI guidance will appear here.</div>
+      </div>
+
+      <div class="card">
+        <h3>Dashboard</h3>
+        <canvas id="financeChart" height="180"></canvas>
+      </div>
+    </section>
+
+    <footer>
+      FinSight AI — Fully local intelligent guidance. No external APIs. Not financial advice.
+    </footer>
   </div>
 
-  <!-- Stats Cards -->
-  <div class="dashboard">
-    <div class="card stats">
-      <h2>Usage Stats</h2>
-      <p>Time Used: <span id="timeUsed">0</span> minutes</p>
-      <p>Estimated Cost: $<span id="cost">0.00</span></p>
-      <p>Predicted Monthly Cost: $<span id="predictedCost">0.00</span></p>
-      <p>AI Suggestions: <span id="suggestions">---</span></p>
-    </div>
+  <script>
+    let chart;
+    let model;
 
-    <div class="card">
-      <h2>Personalized Energy-Saving Plan</h2>
-      <ul id="energyPlan"></ul>
-    </div>
-  </div>
+    async function loadQnAModel(){
+      model = await qna.load();
+    }
 
-  <!-- Usage Chart -->
-  <div class="card" style="margin-top:30px;">
-    <h2>Usage Dashboard</h2>
-    <canvas id="usageChart" width="400" height="200"></canvas>
-  </div>
-</div>
+    function loadData(){
+      const data = JSON.parse(localStorage.getItem('financeData')) || [];
+      const goal = JSON.parse(localStorage.getItem('financeGoal')) || null;
+      if(data.length) updateUI(data[data.length-1], data, goal);
+      loadQnAModel();
+    }
 
-<footer>
-  &copy; 2026 AI Power Optimizer. All rights reserved.
-</footer>
+    async function generateAIGuidance(latest,totalSavings,goal){
+      const prompt = `I have an income of $${latest.income} and expenses of $${latest.expenses}. Notes: ${latest.notes}. Total savings so far: $${totalSavings}. Goal: ${goal?goal.amount+' by '+goal.date:'None'}. Generate concise financial guidance.`;
+      let advice = prompt;
+      if(model){
+        try{
+          const answers = await model.findAnswers(prompt,prompt);
+          if(answers.length) advice = answers[0].text;
+        } catch(e){console.error(e);}
+      }
+      document.getElementById('aiOutput').textContent = advice;
+    }
 
-<script>
-let startTime, interval;
-const powerWatts = 60;
-const costPerKWh = 0.13;
-let usageData = JSON.parse(localStorage.getItem('powerHistory') || "[]");
+    function saveData(){
+      const income=parseFloat(document.getElementById('income').value)||0;
+      const expenses=parseFloat(document.getElementById('expenses').value)||0;
+      const notes=document.getElementById('notes').value.toLowerCase();
+      const goalAmount=parseFloat(document.getElementById('goalAmount').value)||0;
+      const goalDate=document.getElementById('goalDate').value;
+      const entry={date:new Date().toLocaleDateString(),income,expenses,savings:income-expenses,notes};
+      const data=JSON.parse(localStorage.getItem('financeData'))||[];
+      data.push(entry);
+      localStorage.setItem('financeData',JSON.stringify(data));
+      if(goalAmount){
+        const goal={amount:goalAmount,date:goalDate};
+        localStorage.setItem('financeGoal',JSON.stringify(goal));
+      }
+      const goal=JSON.parse(localStorage.getItem('financeGoal'))||null;
+      updateUI(entry,data,goal);
+    }
 
-// Chart
-const ctx = document.getElementById('usageChart').getContext('2d');
-const usageChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: usageData.map(d => d.date),
-        datasets: [{
-            label: 'Cost ($)',
-            data: usageData.map(d => d.cost),
-            borderColor: '#4f46e5',
-            backgroundColor: 'rgba(79,70,229,0.2)',
-            tension: 0.3,
-            fill: true
-        }]
-    },
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
-});
+    function updateUI(latest,all,goal){
+      document.getElementById('snapIncome').textContent='$'+latest.income.toFixed(2);
+      document.getElementById('snapExpenses').textContent='$'+latest.expenses.toFixed(2);
+      document.getElementById('snapSavings').textContent='$'+latest.savings.toFixed(2);
+      const totalSavings=all.reduce((s,d)=>s+d.savings,0);
+      if(goal&&goal.amount){
+        const progress=Math.min(100,(totalSavings/goal.amount)*100);
+        document.getElementById('goalProgress').textContent=progress.toFixed(1)+'%';
+      }
+      generateAIGuidance(latest,totalSavings,goal);
+      renderChart(all);
+    }
 
-// Buttons
-document.getElementById('startBtn').onclick = () => {
-    startTime = Date.now();
-    interval = setInterval(updateStats, 1000);
-    document.getElementById('startBtn').disabled = true;
-    document.getElementById('stopBtn').disabled = false;
-};
+    function renderChart(data){
+      const labels=data.map(d=>d.date);
+      const incomeData=data.map(d=>d.income);
+      const expenseData=data.map(d=>d.expenses);
+      const savingsData=data.map(d=>d.savings);
+      if(chart) chart.destroy();
+      chart=new Chart(document.getElementById('financeChart'),{type:'line',data:{labels,datasets:[{label:'Income',data:incomeData},{label:'Expenses',data:expenseData},{label:'Savings',data:savingsData}]},options:{plugins:{legend:{labels:{color:'#e6e9f2'}}},scales:{x:{ticks:{color:'#9aa3b2'}},y:{ticks:{color:'#9aa3b2'}}}}});
+    }
 
-document.getElementById('stopBtn').onclick = () => {
-    clearInterval(interval);
-    document.getElementById('startBtn').disabled = false;
-    document.getElementById('stopBtn').disabled = true;
-    saveStats();
-};
-
-function updateStats() {
-    let minutes = Math.floor((Date.now() - startTime) / 60000);
-    document.getElementById('timeUsed').innerText = minutes;
-
-    let kWh = (powerWatts / 1000) * (minutes / 60);
-    let cost = (kWh * costPerKWh).toFixed(2);
-    document.getElementById('cost').innerText = cost;
-
-    // Dynamic AI suggestions
-    let suggestions = [];
-    if (minutes >= 60) suggestions.push("Active for over an hour – take a break.");
-    if (minutes >= 120) suggestions.push("Dim screen brightness or close unused apps.");
-    if (new Date().getHours() >= 18) suggestions.push("Evening usage is costly – consider turning off devices.");
-    if (suggestions.length === 0) suggestions.push("Great energy-efficient usage!");
-    document.getElementById('suggestions').innerText = suggestions.join(" ");
-
-    // Predict monthly cost
-    let totalCost = usageData.reduce((sum, d) => sum + parseFloat(d.cost), 0) + parseFloat(cost);
-    let avgDailyCost = totalCost / (usageData.length + 1);
-    document.getElementById('predictedCost').innerText = (avgDailyCost * 30).toFixed(2);
-
-    // Update energy plan
-    generateEnergyPlan(minutes);
-}
-
-function saveStats() {
-    let minutes = Math.floor((Date.now() - startTime) / 60000);
-    let cost = ((powerWatts / 1000) * (minutes / 60) * costPerKWh).toFixed(2);
-    usageData.push({ minutes, cost, date: new Date().toLocaleString() });
-    localStorage.setItem('powerHistory', JSON.stringify(usageData));
-
-    // Update chart
-    usageChart.data.labels = usageData.map(d => d.date);
-    usageChart.data.datasets[0].data = usageData.map(d => d.cost);
-    usageChart.update();
-
-    alert(`Session saved! You used ${minutes} minutes, costing $${cost}`);
-}
-
-function generateEnergyPlan(minutes) {
-    let plan = [];
-    if (minutes >= 60) plan.push("Take a 10-minute break every hour to save energy.");
-    if (minutes >= 90) plan.push("Reduce screen brightness to 70% or close unused apps.");
-    if (new Date().getHours() >= 18) plan.push("Avoid heavy usage during evening peak hours.");
-    if (minutes < 60) plan.push("Keep up your efficient usage habits!");
-    document.getElementById('energyPlan').innerHTML = plan.map(item => `<li>${item}</li>`).join('');
-}
-</script>
-
+    loadData();
+  </script>
 </body>
 </html>
