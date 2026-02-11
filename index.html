@@ -2,288 +2,218 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SmartSaver AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartSaver AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f3f3f3;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:#f4f6f9;color:#111;}
+header{
+    background:white;
+    padding:20px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
-
-/* TOP NAV */
-.topbar {
-  background: #131921;
-  color: white;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.logo{font-weight:700;font-size:22px;}
+.hero{
+    background:linear-gradient(135deg,#111,#333);
+    color:white;
+    padding:60px 40px;
+    text-align:center;
 }
-
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #facc15;
+.section{padding:50px 40px;}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:25px;
 }
-
-.search input {
-  flex: 1;
-  padding: 8px 12px;
-  font-size: 15px;
-  border-radius: 4px;
-  border: none;
+.card{
+    background:white;
+    border-radius:25px;
+    padding:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.05);
 }
-
-/* HERO CAROUSEL */
-.hero {
-  position: relative;
-  overflow: hidden;
-  height: 220px;
-  background: #ff9900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.card img{
+    width:100%;
+    height:170px;
+    object-fit:cover;
+    border-radius:20px;
 }
-
-.hero img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-bottom: 5px solid #facc15;
+.card h3{margin-top:10px;}
+.price{margin:10px 0;font-weight:600;}
+.badge{
+    background:#00c853;
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    display:inline-block;
 }
-
-.hero-text {
-  position: absolute;
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
-  text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:40px;
+    background:#111;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
 }
-
-/* SECTIONS */
-.section {
-  padding: 20px;
+.modal{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
 }
-
-.section h2 {
-  margin-bottom: 12px;
+.modal-content{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    width:350px;
 }
-
-/* GRID CARDS */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+table{
+    width:100%;
+    margin-top:15px;
+    border-collapse:collapse;
 }
-
-.card {
-  background: white;
-  padding: 14px;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s;
+td{
+    padding:6px 0;
+    font-size:14px;
 }
-
-.card:hover {
-  transform: translateY(-3px);
-}
-
-.card img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 10px;
-}
-
-/* AI RECOMMENDED BADGE */
-.badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: #ff9900;
-  color: white;
-  padding: 4px 8px;
-  font-size: 12px;
-  font-weight: bold;
-  border-radius: 4px;
-  z-index: 10;
-}
-
-/* BUTTONS */
-.card button, #checkout button {
-  width: 100%;
-  padding: 10px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 6px;
-}
-
-.card button:hover, #checkout button:hover {
-  background: #1e40af;
-}
-
-/* CHECKOUT */
-#checkout {
-  display: none;
-  background: white;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-/* SLIDER */
-.slider {
-  width: 100%;
-}
-
-.small {
-  font-size: 13px;
-  color: #555;
-}
-
-/* SKELETON LOADER */
-.skeleton {
-  background: #ddd;
-  height: 140px;
-  width: 100%;
-  border-radius: 6px;
-  animation: shimmer 1.2s infinite linear;
-}
-
-@keyframes shimmer {
-  0% { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  font-size: 12px;
-  color: #555;
+.small{
+    font-size:12px;
+    color:#666;
+    margin-top:8px;
 }
 </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<div class="topbar">
-  <div class="logo">SmartSaver AI</div>
-  <input placeholder="Search travel, groceries, services…" class="search">
-</div>
+<header>
+<div class="logo">SmartSaver AI</div>
+<div>Session Views: <span id="sessionViews">0</span></div>
+</header>
 
-<!-- HERO CAROUSEL -->
 <div class="hero">
-  <img id="heroImg" src="https://images.unsplash.com/photo-1502920514313-52581002a659">
-  <div class="hero-text">AI Finds the Best Deals for You!</div>
+<h1>AI Optimization Engine</h1>
+<p>Transparent • Algorithm-Based • No External APIs Connected</p>
 </div>
 
-<!-- SECTIONS -->
-<div class="section" id="travelSection">
-<h2>Travel Deals</h2>
-<div class="grid" id="travelGrid"></div>
+<div class="section">
+<div class="grid" id="productGrid"></div>
 </div>
 
-<div class="section" id="carSection">
-<h2>Car Services</h2>
-<div class="grid" id="carGrid"></div>
+<div class="modal" id="modal">
+<div class="modal-content">
+<h3>Market Comparison</h3>
+<div id="comparisonTable"></div>
+<div class="small">Generated Market Simulation — No external APIs connected.</div>
+<br>
+<input type="number" id="depositPercent" placeholder="Deposit % (15-100)" style="width:100%;padding:10px;border-radius:20px;border:1px solid #ccc;">
+<br><br>
+<button onclick="confirmDeposit()">Continue</button>
 </div>
-
-<div class="section" id="grocerySection">
-<h2>Grocery Plans</h2>
-<div class="grid" id="groceryGrid"></div>
 </div>
-
-<!-- CHECKOUT -->
-<div id="checkout"></div>
 
 <script>
-// HERO CAROUSEL
-const heroImages = [
-  "https://images.unsplash.com/photo-1502920514313-52581002a659",
-  "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-  "https://images.unsplash.com/photo-1542838132-92c53300491e"
+
+let sessionViews = 0;
+let selectedPrice = 0;
+let selectedProviders = [];
+
+const baseProducts = [
+{ name:"NYC → Miami Flight", min:100, max:200 },
+{ name:"Tesla Model 3 2024", min:35000, max:42000 },
+{ name:"Brake Replacement", min:200, max:400 },
+{ name:"Weekly Grocery Basket", min:50, max:120 }
 ];
-let currentHero=0;
-setInterval(()=>{
-  currentHero=(currentHero+1)%heroImages.length;
-  document.getElementById("heroImg").src = heroImages[currentHero];
-}, 5000);
 
-// RANDOM NUMBER GENERATOR
-function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-
-let selectedPrice=0;
-let partnerURL="";
-
-// GENERATE CARDS
-function createCard(name, priceMin, priceMax, url, image, recommended){
-  const price = rand(priceMin, priceMax);
-  let badge = recommended ? `<div class="badge">AI Recommended</div>` : "";
-  return `
-  <div class="card">
-    ${badge}
-    <img src="${image}">
-    <b>${name}</b>
-    <p>$${price}</p>
-    <button onclick="openCheckout('${name}', ${price}, '${url}')">
-      Continue
-    </button>
-  </div>`;
+function random(min,max){
+return Math.floor(Math.random()*(max-min+1))+min;
 }
 
-// POPULATE SECTIONS
-document.getElementById("travelGrid").innerHTML = 
-  createCard("Flight Deal",120,350,"https://www.google.com/travel","https://images.unsplash.com/photo-1502920514313-52581002a659",true) +
-  createCard("Hotel Deal",80,240,"https://www.booking.com","https://images.unsplash.com/photo-1566073771259-6a8506099945",false);
-
-document.getElementById("carGrid").innerHTML = 
-  createCard("Oil Change",70,150,"https://www.jiffylube.com","https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2",true) +
-  createCard("Brake Service",120,260,"https://www.firestonecompleteautocare.com","https://images.unsplash.com/photo-1617814076367-b759c7d7e738",false);
-
-document.getElementById("groceryGrid").innerHTML = 
-  createCard("Weekly Grocery Plan",50,100,"https://www.instacart.com","https://images.unsplash.com/photo-1542838132-92c53300491e",true);
-
-// CHECKOUT
-function openCheckout(name, price, url){
-  selectedPrice=price;
-  partnerURL=url;
-
-  const c=document.getElementById("checkout");
-  c.style.display="block";
-  c.innerHTML=`
-    <h2>Before You Continue</h2>
-    <p><b>${name}</b></p>
-    <p>Partner price: <b>$${price}</b></p>
-    <label>Choose AI service fee: <b><span id="percent">15</span>%</b></label>
-    <input type="range" min="15" max="100" value="15" class="slider" oninput="updateFee(this.value)">
-    <p>Service fee: <b>$<span id="fee">${Math.round(price*0.15)}</span></b></p>
-    <p class="small">Fee covers AI deal discovery & booking assistance.</p>
-    <button onclick="payAndGo()">Pay & Continue</button>`;
-  c.scrollIntoView({behavior:"smooth"});
+function generateProviders(baseMin,baseMax){
+let providers=[];
+for(let i=0;i<4;i++){
+providers.push(random(baseMin,baseMax));
+}
+return providers;
 }
 
-function updateFee(p){
-  document.getElementById("percent").innerText=p;
-  document.getElementById("fee").innerText = Math.round(selectedPrice*(p/100));
+function applyTimeAdjustment(price){
+let hour = new Date().getHours();
+if(hour >=18){
+return price + Math.round(price*0.05);
+}
+return price;
 }
 
-function payAndGo(){
-  alert("Payment received! Redirecting…");
-  window.location.href=partnerURL;
+function renderProducts(){
+const grid=document.getElementById("productGrid");
+grid.innerHTML="";
+
+baseProducts.forEach(product=>{
+
+let providers = generateProviders(product.min,product.max);
+let lowest = Math.min(...providers);
+let highest = Math.max(...providers);
+let adjusted = applyTimeAdjustment(lowest);
+
+let confidence = Math.round(((highest-adjusted)/highest)*100);
+
+grid.innerHTML+=`
+<div class="card">
+<img src="https://picsum.photos/400/300?random=${Math.random()}">
+<h3>${product.name}</h3>
+<div class="price">$${adjusted}</div>
+<div class="badge">$${highest-adjusted} lower than highest provider</div>
+<div class="small">Confidence Score: ${confidence}% below generated market peak</div>
+<br>
+<button onclick="openModal(${adjusted},${JSON.stringify(providers)})">View Details</button>
+</div>
+`;
+});
 }
+
+function openModal(price,providers){
+selectedPrice=price;
+selectedProviders=providers;
+
+sessionViews++;
+document.getElementById("sessionViews").innerText=sessionViews;
+
+let tableHTML="<table>";
+providers.forEach((p,i)=>{
+tableHTML+=`<tr><td>Provider ${i+1}</td><td>$${p}</td></tr>`;
+});
+tableHTML+="</table>";
+
+document.getElementById("comparisonTable").innerHTML=tableHTML;
+document.getElementById("modal").style.display="flex";
+}
+
+function confirmDeposit(){
+let percent=document.getElementById("depositPercent").value;
+if(percent<15||percent>100){
+alert("Deposit must be between 15% and 100%");
+return;
+}
+let amount=(selectedPrice*percent)/100;
+alert("Deposit Calculated: $"+amount.toFixed(2));
+document.getElementById("modal").style.display="none";
+window.location.href="https://example.com";
+}
+
+renderProducts();
+
 </script>
 
-<footer>
-SmartSaver AI is an independent service and not affiliated with third-party merchants.
-</footer>
 </body>
 </html>
