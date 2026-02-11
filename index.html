@@ -6,273 +6,274 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:#e3e6e6;
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f3f3f3;
 }
 
-/* TOP BAR */
-.topbar{
-  background:#131921;
-  color:white;
-  padding:10px 16px;
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-.logo{
-  font-size:22px;
-  font-weight:bold;
-  color:#facc15;
-}
-.search{flex:1;}
-.search input{
-  width:100%;
-  padding:8px;
-  font-size:15px;
-  border-radius:4px;
-  border:none;
+/* TOP NAV */
+.topbar {
+  background: #131921;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-/* HERO SLIDER */
-.hero{
-  position:relative;
-  height:220px;
-  overflow:hidden;
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #facc15;
 }
-.slide{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  padding:30px;
-  font-size:28px;
-  font-weight:bold;
-  color:#111;
-  opacity:0;
-  transition:opacity 1s;
+
+.search input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 15px;
+  border-radius: 4px;
+  border: none;
 }
-.slide.active{opacity:1;}
-.slide.travel{background:linear-gradient(90deg,#ff9900,#ffd699);}
-.slide.car{background:linear-gradient(90deg,#60a5fa,#bfdbfe);}
-.slide.grocery{background:linear-gradient(90deg,#4ade80,#bbf7d0);}
+
+/* HERO CAROUSEL */
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 220px;
+  background: #ff9900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 5px solid #facc15;
+}
+
+.hero-text {
+  position: absolute;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+}
 
 /* SECTIONS */
-.section{padding:20px;}
-.section h2{margin-bottom:10px;}
+.section {
+  padding: 20px;
+}
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
+.section h2 {
+  margin-bottom: 12px;
 }
-.card{
-  background:white;
-  padding:14px;
-  border-radius:8px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.15);
-  position:relative;
-}
-.card img{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-  border-radius:6px;
-  margin-bottom:10px;
-}
-.badge{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:#facc15;
-  padding:4px 8px;
-  font-size:12px;
-  font-weight:bold;
-  border-radius:4px;
-}
-.card button{
-  width:100%;
-  padding:10px;
-  background:#2563eb;
-  color:white;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-.card button:hover{background:#1e40af;}
 
-/* SKELETON */
-.skeleton{
-  background:linear-gradient(90deg,#ddd,#eee,#ddd);
-  animation:load 1.2s infinite;
-  border-radius:6px;
+/* GRID CARDS */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
 }
-@keyframes load{
-  0%{background-position:-200px}
-  100%{background-position:200px}
+
+.card {
+  background: white;
+  padding: 14px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+/* AI RECOMMENDED BADGE */
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff9900;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+/* BUTTONS */
+.card button, #checkout button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.card button:hover, #checkout button:hover {
+  background: #1e40af;
 }
 
 /* CHECKOUT */
-#checkout{
-  display:none;
-  background:white;
-  margin:20px;
-  padding:20px;
-  border-radius:8px;
+#checkout {
+  display: none;
+  background: white;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
 }
-.slider{width:100%;}
-.small{font-size:13px;color:#555;}
 
-footer{
-  text-align:center;
-  padding:20px;
-  font-size:12px;
-  color:#555;
+/* SLIDER */
+.slider {
+  width: 100%;
+}
+
+.small {
+  font-size: 13px;
+  color: #555;
+}
+
+/* SKELETON LOADER */
+.skeleton {
+  background: #ddd;
+  height: 140px;
+  width: 100%;
+  border-radius: 6px;
+  animation: shimmer 1.2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: #555;
 }
 </style>
 </head>
-
 <body>
 
 <!-- NAV -->
 <div class="topbar">
   <div class="logo">SmartSaver AI</div>
-  <div class="search">
-    <input placeholder="Search travel, cars, groceries…">
-  </div>
+  <input placeholder="Search travel, groceries, services…" class="search">
 </div>
 
-<!-- HERO SLIDER -->
+<!-- HERO CAROUSEL -->
 <div class="hero">
-  <div class="slide travel active">✈️ AI finds the cheapest travel deals</div>
-  <div class="slide car">🚗 Smarter car service bookings</div>
-  <div class="slide grocery">🛒 Grocery shopping, optimized</div>
+  <img id="heroImg" src="https://images.unsplash.com/photo-1502920514313-52581002a659">
+  <div class="hero-text">AI Finds the Best Deals for You!</div>
 </div>
 
-<!-- TRAVEL -->
-<div class="section">
-<h2>✈️ Travel Deals</h2>
-<div class="grid">
-  <div class="card">
-    <span class="badge">AI Recommended</span>
-    <img src="https://images.unsplash.com/photo-1502920514313-52581002a659">
-    <b>Flight Deal</b>
-    <p>$120 – $350</p>
-    <button onclick="startCheckout('Flight Deal', rand(120,350), 'https://www.google.com/travel')">
-      View Deal
-    </button>
-  </div>
-
-  <div class="card">
-    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945">
-    <b>Hotel Deal</b>
-    <p>$80 – $240</p>
-    <button onclick="startCheckout('Hotel Deal', rand(80,240), 'https://www.booking.com')">
-      View Deal
-    </button>
-  </div>
-</div>
+<!-- SECTIONS -->
+<div class="section" id="travelSection">
+<h2>Travel Deals</h2>
+<div class="grid" id="travelGrid"></div>
 </div>
 
-<!-- CAR -->
-<div class="section">
-<h2>🚗 Car Appointments</h2>
-<div class="grid">
-  <div class="card">
-    <span class="badge">AI Recommended</span>
-    <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2">
-    <b>Oil Change</b>
-    <p>$70 – $150</p>
-    <button onclick="startCheckout('Oil Change', rand(70,150), 'https://www.jiffylube.com')">
-      Book
-    </button>
-  </div>
-</div>
+<div class="section" id="carSection">
+<h2>Car Services</h2>
+<div class="grid" id="carGrid"></div>
 </div>
 
-<!-- GROCERY -->
-<div class="section">
-<h2>🛒 Grocery Shopping</h2>
-<div class="grid">
-  <div class="card">
-    <span class="badge">AI Recommended</span>
-    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e">
-    <b>Weekly Grocery Plan</b>
-    <p>$50 – $100</p>
-    <button onclick="startCheckout('Grocery Plan', rand(50,100), 'https://www.instacart.com')">
-      Shop
-    </button>
-  </div>
-</div>
+<div class="section" id="grocerySection">
+<h2>Grocery Plans</h2>
+<div class="grid" id="groceryGrid"></div>
 </div>
 
 <!-- CHECKOUT -->
 <div id="checkout"></div>
 
 <script>
-/* HERO ROTATION */
-let slides=document.querySelectorAll(".slide");
-let index=0;
+// HERO CAROUSEL
+const heroImages = [
+  "https://images.unsplash.com/photo-1502920514313-52581002a659",
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+  "https://images.unsplash.com/photo-1542838132-92c53300491e"
+];
+let currentHero=0;
 setInterval(()=>{
-  slides[index].classList.remove("active");
-  index=(index+1)%slides.length;
-  slides[index].classList.add("active");
-},4000);
+  currentHero=(currentHero+1)%heroImages.length;
+  document.getElementById("heroImg").src = heroImages[currentHero];
+}, 5000);
+
+// RANDOM NUMBER GENERATOR
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
 
 let selectedPrice=0;
 let partnerURL="";
 
-function rand(min,max){
-  return Math.floor(Math.random()*(max-min+1))+min;
+// GENERATE CARDS
+function createCard(name, priceMin, priceMax, url, image, recommended){
+  const price = rand(priceMin, priceMax);
+  let badge = recommended ? `<div class="badge">AI Recommended</div>` : "";
+  return `
+  <div class="card">
+    ${badge}
+    <img src="${image}">
+    <b>${name}</b>
+    <p>$${price}</p>
+    <button onclick="openCheckout('${name}', ${price}, '${url}')">
+      Continue
+    </button>
+  </div>`;
 }
 
-function startCheckout(name, price, url){
+// POPULATE SECTIONS
+document.getElementById("travelGrid").innerHTML = 
+  createCard("Flight Deal",120,350,"https://www.google.com/travel","https://images.unsplash.com/photo-1502920514313-52581002a659",true) +
+  createCard("Hotel Deal",80,240,"https://www.booking.com","https://images.unsplash.com/photo-1566073771259-6a8506099945",false);
+
+document.getElementById("carGrid").innerHTML = 
+  createCard("Oil Change",70,150,"https://www.jiffylube.com","https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2",true) +
+  createCard("Brake Service",120,260,"https://www.firestonecompleteautocare.com","https://images.unsplash.com/photo-1617814076367-b759c7d7e738",false);
+
+document.getElementById("groceryGrid").innerHTML = 
+  createCard("Weekly Grocery Plan",50,100,"https://www.instacart.com","https://images.unsplash.com/photo-1542838132-92c53300491e",true);
+
+// CHECKOUT
+function openCheckout(name, price, url){
   selectedPrice=price;
   partnerURL=url;
-  const c=document.getElementById("checkout");
 
+  const c=document.getElementById("checkout");
   c.style.display="block";
   c.innerHTML=`
-    <div class="skeleton" style="height:20px;margin-bottom:10px"></div>
-    <div class="skeleton" style="height:20px;margin-bottom:10px"></div>
-    <div class="skeleton" style="height:40px"></div>
-  `;
-
-  setTimeout(()=>{
-    c.innerHTML=`
-      <h2>Before You Continue</h2>
-      <p><b>${name}</b></p>
-      <p>Partner price: <b>$${price}</b></p>
-
-      <label>Choose AI service fee:
-        <b><span id="percent">15</span>%</b>
-      </label>
-
-      <input type="range" min="15" max="100" value="15"
-        class="slider"
-        oninput="updateFee(this.value)">
-
-      <p>Service fee:
-        <b>$<span id="fee">${Math.round(price*0.15)}</span></b>
-      </p>
-
-      <p class="small">
-        Covers AI deal discovery & booking assistance.
-      </p>
-
-      <button onclick="payAndGo()">Pay & Continue</button>
-    `;
-  },1200);
-
+    <h2>Before You Continue</h2>
+    <p><b>${name}</b></p>
+    <p>Partner price: <b>$${price}</b></p>
+    <label>Choose AI service fee: <b><span id="percent">15</span>%</b></label>
+    <input type="range" min="15" max="100" value="15" class="slider" oninput="updateFee(this.value)">
+    <p>Service fee: <b>$<span id="fee">${Math.round(price*0.15)}</span></b></p>
+    <p class="small">Fee covers AI deal discovery & booking assistance.</p>
+    <button onclick="payAndGo()">Pay & Continue</button>`;
   c.scrollIntoView({behavior:"smooth"});
 }
 
 function updateFee(p){
   document.getElementById("percent").innerText=p;
-  document.getElementById("fee").innerText=
-    Math.round(selectedPrice*(p/100));
+  document.getElementById("fee").innerText = Math.round(selectedPrice*(p/100));
 }
 
 function payAndGo(){
@@ -284,7 +285,5 @@ function payAndGo(){
 <footer>
 SmartSaver AI is an independent service and not affiliated with third-party merchants.
 </footer>
-
 </body>
 </html>
-
